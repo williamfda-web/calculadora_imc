@@ -2,7 +2,7 @@ import streamlit as st
 
 # Configuração da página
 st.set_page_config(
-    page_title="Calculadoras de Saúde",
+    page_title="Calculadoras de Saúde by William",
     page_icon="💪",
     layout="centered"
 )
