@@ -10,22 +10,15 @@ st.set_page_config(
 )
 
 # ==========================================
-# TEMA ESCURO PERSONALIZADO
+# TEMA ESCURO
 # ==========================================
 st.markdown("""
 <style>
-    /* Fundo principal */
     .stApp {
         background-color: #0E1117;
         color: #FFFFFF;
     }
 
-    /* Barra lateral */
-    [data-testid="stSidebar"] {
-        background-color: #161B22;
-    }
-
-    /* Títulos */
     h1, h2, h3 {
         color: #FFFFFF !important;
     }
@@ -35,19 +28,16 @@ st.markdown("""
         color: #00C853 !important;
     }
 
-    /* Textos */
     p, label, .stMarkdown {
         color: #E6EDF3 !important;
     }
 
-    /* Campos de entrada */
     .stNumberInput input {
         background-color: #161B22 !important;
         color: #FFFFFF !important;
         border: 1px solid #30363D !important;
     }
 
-    /* Abas */
     .stTabs [data-baseweb="tab-list"] {
         gap: 10px;
         background-color: #0E1117;
@@ -65,7 +55,6 @@ st.markdown("""
         color: #FFFFFF !important;
     }
 
-    /* Botões */
     .stButton > button {
         width: 100%;
         background-color: #00C853;
@@ -81,7 +70,6 @@ st.markdown("""
         color: #FFFFFF;
     }
 
-    /* Resultado */
     [data-testid="stMetric"] {
         background-color: #161B22;
         border: 1px solid #30363D;
@@ -89,7 +77,6 @@ st.markdown("""
         border-radius: 12px;
     }
 
-    /* Divisórias */
     hr {
         border-color: #30363D;
     }
@@ -130,7 +117,8 @@ with aba_imc:
         "Peso (kg)",
         min_value=1.0,
         max_value=500.0,
-        value=70.0,
+        value=None,
+        placeholder="Digite seu peso",
         step=0.1
     )
 
@@ -138,40 +126,49 @@ with aba_imc:
         "Altura (m)",
         min_value=0.5,
         max_value=2.5,
-        value=1.70,
+        value=None,
+        placeholder="Digite sua altura. Ex: 1.70",
         step=0.01
     )
 
     if st.button("Calcular IMC", key="calcular_imc"):
 
-        imc = peso / (altura ** 2)
-
-        st.metric(
-            "Seu IMC",
-            f"{imc:.2f}"
-        )
-
-        # Classificação
-        if imc < 18.5:
-            classificacao = "Abaixo do peso"
-            st.warning(f"⚠️ Classificação: **{classificacao}**")
-
-        elif imc < 25:
-            classificacao = "Peso normal"
-            st.success(f"✅ Classificação: **{classificacao}**")
-
-        elif imc < 30:
-            classificacao = "Sobrepeso"
-            st.warning(f"⚠️ Classificação: **{classificacao}**")
+        if peso is None or altura is None:
+            st.warning("⚠️ Preencha o peso e a altura.")
 
         else:
-            classificacao = "Obesidade"
-            st.error(f"🔴 Classificação: **{classificacao}**")
+            imc = peso / (altura ** 2)
 
-        st.info(
-            "O IMC é uma referência geral e não substitui "
-            "uma avaliação profissional."
-        )
+            st.metric(
+                "Seu IMC",
+                f"{imc:.2f}"
+            )
+
+            # Classificação do IMC
+            if imc < 18.5:
+                st.warning(
+                    "⚠️ Classificação: **Abaixo do peso**"
+                )
+
+            elif imc < 25:
+                st.success(
+                    "✅ Classificação: **Peso normal**"
+                )
+
+            elif imc < 30:
+                st.warning(
+                    "⚠️ Classificação: **Sobrepeso**"
+                )
+
+            else:
+                st.error(
+                    "🔴 Classificação: **Obesidade**"
+                )
+
+            st.info(
+                "O IMC é uma referência geral e não substitui "
+                "uma avaliação realizada por um profissional de saúde."
+            )
 
 
 # ==========================================
@@ -185,7 +182,8 @@ with aba_agua:
         "Peso corporal (kg)",
         min_value=1.0,
         max_value=500.0,
-        value=70.0,
+        value=None,
+        placeholder="Digite seu peso",
         step=0.1,
         key="peso_agua"
     )
@@ -195,23 +193,28 @@ with aba_agua:
         key="calcular_agua"
     ):
 
-        # Fórmula: peso × 35 ml
-        agua_ml = peso_agua * 35
-        agua_litros = agua_ml / 1000
+        if peso_agua is None:
+            st.warning("⚠️ Digite seu peso.")
 
-        st.metric(
-            "Meta diária sugerida",
-            f"{agua_litros:.2f} L"
-        )
+        else:
+            # Fórmula: peso × 35 ml
+            agua_ml = peso_agua * 35
+            agua_litros = agua_ml / 1000
 
-        st.write(
-            f"💧 Aproximadamente **{agua_ml:.0f} ml de água por dia**."
-        )
+            st.metric(
+                "Meta diária sugerida",
+                f"{agua_litros:.2f} L"
+            )
 
-        st.info(
-            "Essa sugestão utiliza a fórmula de 35 ml por kg de peso. "
-            "A necessidade individual pode variar."
-        )
+            st.write(
+                f"💧 Aproximadamente "
+                f"**{agua_ml:.0f} ml de água por dia**."
+            )
+
+            st.info(
+                "Essa sugestão utiliza a fórmula de 35 ml por kg "
+                "de peso. A necessidade individual pode variar."
+            )
 
 
 # ==========================================
@@ -219,6 +222,4 @@ with aba_agua:
 # ==========================================
 st.divider()
 
-st.caption(
-    "💡 Ferramentas para fins informativos."
-)
+st.caption("💡 Ferramentas para fins informativos.")
