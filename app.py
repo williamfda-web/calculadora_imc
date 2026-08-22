@@ -7,7 +7,7 @@ st.set_page_config(
     layout="centered"
 )
 
-st.title("💪 Calculadoras de Saúde (Criado por William)")
+st.title("💪 Calculadoras de Saúde - William")
 st.write("Calcule seu IMC e veja uma sugestão de consumo diário de água.")
 
 # Criando abas
