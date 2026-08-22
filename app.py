@@ -2,12 +2,12 @@ import streamlit as st
 
 # Configuração da página
 st.set_page_config(
-    page_title="Calculadoras de Saúde by William",
+    page_title="Calculadoras de Saúde",
     page_icon="💪",
     layout="centered"
 )
 
-st.title("💪 Calculadoras de Saúde")
+st.title("💪 Calculadoras de Saúde (Criado por William)")
 st.write("Calcule seu IMC e veja uma sugestão de consumo diário de água.")
 
 # Criando abas
